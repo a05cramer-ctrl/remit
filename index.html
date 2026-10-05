@@ -1,0 +1,501 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Remit · Creator fees, paid to anyone</title>
+<meta name="description" content="Launch a coin on pump.fun and route its creator fees to someone you choose, paid to their PayPal, Venmo or bank account.">
+<meta property="og:title" content="Remit · Creator fees, paid to anyone">
+<meta property="og:description" content="Launch a coin and route its creator fees to someone you choose, paid to their PayPal, Venmo or bank account.">
+<meta property="og:image" content="og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#f4f6fb">
+<link rel="icon" href="pfp.jpg">
+<link rel="apple-touch-icon" href="pfp.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=Red+Hat+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0b0d14;--bg:#f4f6fb;--card:#fff;--acc:#2f4bff;--acc-soft:#e6eaff;--mint:#7be0b5;--line:#e4e8f1;--mut:#677085;--r:28px;--f:'Onest',system-ui,sans-serif;--m:'Red Hat Mono',ui-monospace,monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+[hidden]{display:none!important}
+html,body{overflow-x:clip}
+html{scroll-behavior:smooth}
+body{font-family:var(--f);background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased;line-height:1.45}
+a{color:inherit;text-decoration:none}
+button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
+.wrap{max-width:1240px;margin:0 auto;padding:0 20px}
+.mono{font-family:var(--m)}
+.lbl{font-family:var(--m);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--mut)}
+/* nav */
+.nav{position:sticky;top:12px;z-index:50;margin:12px auto 0;max-width:1216px;padding:0 12px}
+.nav-in{display:flex;align-items:center;gap:18px;background:rgba(255,255,255,.9);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.7);border-radius:999px;padding:8px 8px 8px 18px;box-shadow:0 8px 30px rgba(20,30,80,.08)}
+.logo{display:flex;align-items:center;gap:8px;font-weight:600;font-size:20px;letter-spacing:-.02em}
+.logo svg{width:28px;height:28px}
+.links{display:flex;gap:22px;margin:0 auto;font-size:14px;font-weight:500}
+.links a{opacity:.85}.links a:hover{opacity:1}
+.cluster{display:flex;align-items:center;gap:8px}
+.pill{display:flex;align-items:center;gap:8px;background:#fff;border-radius:999px;padding:6px 6px 6px 14px;font-size:12px;font-family:var(--m);border:1px solid var(--line)}
+.pill b{font-weight:500;color:var(--mut)}
+.ibtn{width:30px;height:30px;border-radius:50%;background:var(--ink);color:#fff;display:grid;place-items:center}
+.ibtn svg{width:14px;height:14px}
+.xbtn{width:40px;height:40px;border-radius:50%;background:#fff;display:grid;place-items:center;border:1px solid var(--line)}
+.xbtn svg{width:15px;height:15px}
+.btn{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(#2a2e3b,#0b0d14);color:#fff;padding:12px 22px;border-radius:999px;font-weight:600;font-size:15px;box-shadow:0 6px 18px rgba(11,13,20,.25);transition:transform .2s}
+.btn:hover{transform:translateY(-2px)}
+.btn.ghost{background:#fff;color:var(--ink);box-shadow:none;border:1px solid var(--line)}
+/* hero */
+.hero{position:relative;pointer-events:none;margin:-64px 12px 0;min-height:800px;padding-top:150px}
+.hero-grid>div:first-child,.phone{pointer-events:auto}
+.bg{position:absolute;inset:0;border-radius:0 0 44px 44px;overflow:hidden;z-index:0}
+.sky{position:absolute;inset:-10%;background:linear-gradient(115deg,#cfd9ff 0%,#dfe6ff 30%,#c4f0dc 62%,#fbe9c8 100%);filter:blur(0)}
+.blob{position:absolute;border-radius:50%;filter:blur(60px);opacity:.85;animation:drift 18s ease-in-out infinite alternate}
+.b1{width:620px;height:340px;left:-80px;top:340px;background:#8fa3ff;transform:rotate(-14deg)}
+.b2{width:560px;height:300px;right:-60px;top:80px;background:#7be0b5;animation-delay:-6s}
+.b3{width:520px;height:260px;left:34%;bottom:-60px;background:#ffc9a3;animation-delay:-11s}
+.streak{position:absolute;height:60px;border-radius:99px;filter:blur(26px);opacity:.55;background:linear-gradient(90deg,transparent,#fff,transparent);transform:rotate(-12deg);animation:slide 9s linear infinite}
+.s1{width:700px;left:-200px;top:300px}.s2{width:520px;left:30%;top:520px;animation-delay:-4s}.s3{width:640px;right:-200px;top:200px;animation-delay:-7s}
+@keyframes drift{to{transform:translate(80px,-30px) rotate(8deg) scale(1.1)}}
+@keyframes slide{from{translate:-120px 0}to{translate:260px 0}}
+.hero-grid{position:relative;z-index:4;display:grid;grid-template-columns:1.15fr .85fr;gap:20px;align-items:start}
+.eyebrow{display:inline-block;font-family:var(--m);font-size:11px;letter-spacing:.08em;text-transform:uppercase;background:rgba(255,255,255,.75);border:1px solid #fff;padding:7px 12px;border-radius:99px}
+h1{font-size:clamp(54px,8.2vw,112px);font-weight:600;letter-spacing:-.05em;line-height:.9;margin:22px 0 28px}
+.via{display:flex;align-items:center;gap:12px;margin-top:64px;font-size:13px;font-weight:500;line-height:1.3}
+.chips{display:flex}
+.chip{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-size:11px;font-weight:700;color:#fff;border:2px solid #eef1ff;margin-left:-8px}
+.chip:first-child{margin-left:0}
+/* phone */
+.phone-wrap{position:relative;z-index:6;pointer-events:none;display:flex;justify-content:center;perspective:1200px;height:700px}
+.phone{position:relative;width:318px;height:640px;border-radius:50px;background:#0a0b10;padding:11px;box-shadow:0 40px 80px rgba(30,40,110,.35),inset 0 0 0 2px #2a2d38;transition:transform .2s ease-out;transform-style:preserve-3d;z-index:3}
+.screen{height:100%;border-radius:40px;background:linear-gradient(#f6f8ff,#eef2fb);overflow:hidden;padding:16px 14px;position:relative}
+.island{position:absolute;top:10px;left:50%;transform:translateX(-50%);width:92px;height:26px;border-radius:99px;background:#0a0b10;z-index:2}
+.ph-head{display:flex;align-items:center;gap:8px;margin-top:30px}
+.ava{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#ff9a76,#ff5f6d);color:#fff;display:grid;place-items:center;font-weight:600;font-size:14px}
+.ph-head small{font-size:9px;color:var(--mut);display:block;line-height:1}
+.ph-head b{font-size:13px;font-weight:600}
+.bell{margin-left:auto;width:30px;height:30px;border-radius:50%;background:#fff;display:grid;place-items:center}
+.ph-amt{margin:16px 0 8px}
+.ph-amt .lbl{font-size:9px}
+.ph-amt strong{display:block;font-size:42px;font-weight:600;letter-spacing:-.04em;line-height:1.05}
+.route{height:138px;border-radius:20px;background:linear-gradient(145deg,#343947,#12141b);color:#fff;padding:14px;position:relative;overflow:hidden;transition:background .5s}
+.route .lbl{color:#9aa1b4;font-size:8px}
+.route h4{position:absolute;left:14px;bottom:30px;font-size:16px;letter-spacing:.04em;font-weight:600}
+.route small{position:absolute;left:14px;bottom:14px;font-size:9px;color:#aeb4c4;font-family:var(--m)}
+.route .ring{position:absolute;right:14px;bottom:14px;width:30px;height:30px;border-radius:50%;background:linear-gradient(90deg,#fff 50%,var(--acc) 50%)}
+.route.v{background:linear-gradient(145deg,#6a8cff,#2f4bff)}
+.route.w{background:linear-gradient(145deg,#4fd4a4,#1b8d70)}
+.acts{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:14px 0}
+.act{text-align:center;font-size:9px;font-weight:500}
+.act i{display:grid;place-items:center;width:40px;height:40px;border-radius:50%;background:#fff;margin:0 auto 4px}
+.act svg{width:16px;height:16px}
+.pool{background:#fff;border-radius:16px;padding:11px 12px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:flex-end;height:74px}
+.pool .lbl{font-size:8px}
+.pool strong{font-size:20px;font-weight:600;letter-spacing:-.03em;margin-right:4px}
+.tag{font-size:8px;background:#ffd8cf;color:#b4442c;padding:2px 5px;border-radius:5px;font-weight:600;vertical-align:middle}
+.tag.p{background:var(--acc-soft);color:var(--acc)}
+.bars{display:flex;align-items:flex-end;gap:2px;height:42px}
+.bars span{width:3px;background:#c8cfe3;border-radius:2px;transform-origin:bottom;animation:grow 1.1s cubic-bezier(.2,.8,.2,1) both}
+.bars span:nth-child(2){animation-delay:.08s}.bars span:nth-child(3){animation-delay:.16s}.bars span:nth-child(4){animation-delay:.24s}.bars span:nth-child(5){animation-delay:.32s}.bars span:nth-child(6){animation-delay:.4s}.bars span:nth-child(7){animation-delay:.48s}
+@keyframes grow{from{transform:scaleY(.05)}}
+.bars.hi span{background:var(--ink)}
+.demo-tag{position:absolute;bottom:10px;left:0;right:0;text-align:center;font-family:var(--m);font-size:8px;letter-spacing:.1em;color:#9aa1b4}
+.float{position:absolute;z-index:4;background:#fff;border-radius:16px;padding:10px 12px;box-shadow:0 18px 40px rgba(30,40,110,.18);font-size:11px;display:flex;gap:8px;align-items:center}
+.float.f1{left:-4px;top:230px;animation:bob 6s ease-in-out infinite}
+.float.f2{right:-14px;top:420px;animation:bob 7s ease-in-out -2s infinite}
+.float b{display:block;font-size:13px}
+.float .dot{width:26px;height:26px;border-radius:8px;background:var(--acc);color:#fff;display:grid;place-items:center;font-size:12px;font-weight:700}
+@keyframes bob{50%{transform:translateY(-10px)}}
+/* intro card */
+.intro{position:relative;z-index:2;margin:-110px 12px 0;background:#fff;border-radius:36px;padding:34px;display:grid;grid-template-columns:1fr 1fr 360px;gap:30px;box-shadow:0 20px 60px rgba(20,30,80,.08)}
+.intro .l{display:flex;flex-direction:column;gap:18px}
+.intro .l p{font-size:15px;color:var(--mut);max-width:260px}
+.carow{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-family:var(--m);font-size:11px}
+.carow code{background:var(--bg);padding:7px 11px;border-radius:99px;border:1px solid var(--line);font-family:var(--m)}
+.carow button,.carow a{background:#fff;border:1px solid var(--line);padding:7px 12px;border-radius:99px;font-size:11px}
+.carow button:hover,.carow a:hover{background:var(--bg)}
+.dest{display:flex;align-items:center;gap:60px;border-top:1px dashed var(--line);padding-top:28px;margin-top:6px}
+.dest p{font-size:19px;font-weight:500;letter-spacing:-.02em;line-height:1.15}
+.mark-lg{width:56px;height:56px}
+/* sections */
+.sec{background:#fff;border-radius:var(--r);padding:44px;margin:12px 12px 0}
+.sec-h{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:28px;gap:20px}
+.sec h2{font-size:clamp(30px,4.3vw,56px);font-weight:600;letter-spacing:-.04em;line-height:1;max-width:820px}
+.sec h3{font-size:22px;font-weight:600;letter-spacing:-.03em;margin-bottom:8px}
+.sec p.s{color:var(--mut);font-size:15px;max-width:520px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.cell{background:var(--bg);border-radius:22px;padding:26px;position:relative;overflow:hidden}
+.cell.w{background:#fff;border:1px solid var(--line)}
+.big{font-size:clamp(44px,6vw,84px);font-weight:600;letter-spacing:-.05em;line-height:1}
+.big small{font-size:.38em;color:var(--mut);letter-spacing:-.02em;margin-left:4px}
+.cell .cap{color:var(--mut);font-size:14px;margin-top:10px;max-width:340px}
+.stack{position:relative;height:190px;margin-top:26px}
+.wal{position:absolute;left:0;right:0;margin:auto;width:84%;height:84px;border-radius:18px;padding:14px 16px;color:#fff;font-family:var(--m);font-size:11px;display:flex;justify-content:space-between;align-items:flex-start;box-shadow:0 -6px 18px rgba(11,13,20,.12)}
+.wal.a{background:linear-gradient(135deg,#343947,#12141b);top:0;z-index:1}
+.wal.b{background:linear-gradient(135deg,#6a8cff,#2f4bff);top:46px;z-index:2;width:90%}
+.wal.c{background:linear-gradient(135deg,#4fd4a4,#1b8d70);top:92px;z-index:3;width:96%}
+.wal span{opacity:.7}
+.steps{counter-reset:s}
+.step{background:var(--bg);border-radius:22px;padding:26px;min-height:230px;display:flex;flex-direction:column;justify-content:space-between}
+.step .n{font-family:var(--m);font-size:12px;color:var(--mut)}
+.step h3{margin-top:60px}
+.field{display:flex;gap:8px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:6px}
+.field input{flex:1;min-width:0;border:0;outline:0;font:inherit;font-size:14px;padding:8px 10px;background:transparent}
+.field .btn{padding:9px 16px;font-size:13px}
+.you{background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px;margin-bottom:14px}
+.you .lbl{margin-bottom:6px}
+.you p{font-size:16px;font-weight:500;letter-spacing:-.02em}
+.alias{display:flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:12px 14px;margin-bottom:12px;font-size:13px}
+.alias b{font-size:15px}
+.ok{margin-left:auto;font-family:var(--m);font-size:10px;background:#e0f8ee;color:#16795a;padding:3px 8px;border-radius:99px}
+.harv{background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px}
+.harv .row{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-top:1px solid var(--line);font-size:13px}
+.harv .row:first-of-type{border-top:0}
+.pos{color:#16795a;font-weight:600}
+/* calc */
+.calc input[type=range]{width:100%;accent-color:var(--acc);margin:14px 0 4px}
+.split{display:flex;height:54px;border-radius:16px;overflow:hidden;margin:14px 0;font-size:13px;font-weight:600;transition:all .3s}
+.split div{display:flex;flex-direction:column;justify-content:center;padding:0 14px;transition:flex .3s}
+.split .r{flex:80;background:var(--ink);color:#fff}
+.split .p{flex:20;background:var(--acc-soft);color:var(--acc)}
+.split small{font-family:var(--m);font-weight:400;font-size:10px;opacity:.7}
+.kv{display:grid;grid-template-columns:1fr 1fr;gap:8px 16px;font-size:13px}
+.kv span{color:var(--mut)}
+.kv b{text-align:right;font-weight:600}
+.code{font-family:var(--m);font-size:12.5px;background:var(--ink);color:#d8defa;border-radius:18px;padding:20px;line-height:1.7;overflow-x:auto}
+.code i{color:#7be0b5;font-style:normal}.code em{color:#8fa3ff;font-style:normal}
+.tabs{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
+.tab{padding:8px 16px;border-radius:99px;background:#fff;border:1px solid var(--line);font-size:13px;font-weight:500}
+.tab.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.rcard{border-radius:20px;color:#fff;padding:20px;height:190px;position:relative;overflow:hidden;transition:background .4s;background:linear-gradient(145deg,#343947,#12141b)}
+.rcard.v{background:linear-gradient(145deg,#6a8cff,#2f4bff)}
+.rcard.w{background:linear-gradient(145deg,#4fd4a4,#1b8d70)}
+.rcard.b{background:linear-gradient(145deg,#f1b36b,#c8692f)}
+.rcard h4{position:absolute;left:20px;bottom:44px;font-size:24px;letter-spacing:.03em}
+.rcard small{position:absolute;left:20px;bottom:22px;font-family:var(--m);font-size:11px;opacity:.8}
+.rcard .lbl{color:rgba(255,255,255,.7)}
+.rcard .lock{position:absolute;right:20px;top:18px;font-family:var(--m);font-size:10px;background:rgba(255,255,255,.2);padding:4px 9px;border-radius:99px}
+/* ladder */
+.ladder{display:flex;align-items:flex-end;gap:6px;height:130px;margin:20px 0 8px}
+.ladder div{flex:1;border-radius:10px 10px 4px 4px;background:#dfe4f2;position:relative;transition:background .3s}
+.ladder div.on{background:var(--ink)}
+.ladder div.nx{background:var(--acc)}
+.ladder span{position:absolute;bottom:-22px;left:0;right:0;text-align:center;font-family:var(--m);font-size:10px;color:var(--mut)}
+.ledger{list-style:none;margin-top:6px}
+.ledger li{display:flex;gap:12px;align-items:center;padding:12px 0;border-top:1px solid var(--line);font-size:14px}
+.ledger li:first-child{border-top:0}
+.ledger i{width:30px;height:30px;border-radius:50%;background:var(--acc-soft);color:var(--acc);display:grid;place-items:center;font-style:normal;font-weight:700;font-size:12px}
+.ledger b{margin-left:auto}
+.q{font-size:clamp(24px,3vw,38px);letter-spacing:-.03em;line-height:1.1;font-weight:500;margin-bottom:16px}
+/* faq */
+details{border-top:1px solid var(--line);padding:22px 0}
+details:last-child{border-bottom:1px solid var(--line)}
+summary{list-style:none;display:flex;gap:18px;font-size:19px;font-weight:500;letter-spacing:-.02em;cursor:pointer;align-items:center}
+summary::-webkit-details-marker{display:none}
+summary i{font-family:var(--m);font-size:12px;color:var(--mut);font-style:normal}
+summary::after{content:"+";margin-left:auto;font-size:26px;font-weight:300;transition:transform .25s}
+details[open] summary::after{transform:rotate(45deg)}
+details p{color:var(--mut);font-size:15px;max-width:680px;margin:14px 0 0 38px}
+.faq-grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:40px}
+.doc{display:block;background:var(--bg);border-radius:20px;padding:24px;min-height:180px;transition:transform .2s}
+.doc:hover{transform:translateY(-4px)}
+.doc .lbl{margin-bottom:60px;display:block}
+.doc h3{font-size:18px;margin:0}
+/* cta */
+.cta{background:var(--ink);color:#fff;border-radius:36px;margin:12px 12px 0;padding:70px 44px;position:relative;overflow:hidden;isolation:isolate}
+.cta::before{content:"";position:absolute;inset:auto -10% -60% -10%;height:420px;background:radial-gradient(closest-side,#2f4bff,transparent);opacity:.7;z-index:-1;filter:blur(30px)}
+.cta::after{content:"";position:absolute;right:-60px;top:-60px;width:360px;height:360px;background:radial-gradient(closest-side,#7be0b5,transparent);opacity:.35;z-index:-1;filter:blur(30px)}
+.cta h2{font-size:clamp(40px,7vw,96px);font-weight:600;letter-spacing:-.05em;line-height:.92;margin:14px 0 30px}
+.cta .lbl{color:#9aa4c8}
+.cta-row{display:grid;grid-template-columns:1fr auto;gap:30px;align-items:end}
+.cta ul{list-style:none;font-size:15px;color:#c8d0ec;line-height:1.9}
+.cta .btn{background:#fff;color:var(--ink)}
+.cta .carow code{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.2);color:#fff}
+.cta .carow button,.cta .carow a{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.2);color:#fff}
+footer{padding:50px 24px 90px;max-width:1240px;margin:0 auto;display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr 1fr;gap:30px;font-size:14px}
+footer h5{font-family:var(--m);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--mut);margin-bottom:12px;font-weight:500}
+footer a{display:block;padding:6px 0;opacity:.85}footer a:hover{opacity:1}
+footer .field{margin-top:14px;max-width:300px}
+.copy{grid-column:1/-1;display:flex;justify-content:space-between;color:var(--mut);font-size:12px;border-top:1px solid var(--line);padding-top:22px;flex-wrap:wrap;gap:10px}
+.toast{position:fixed;left:50%;bottom:26px;transform:translate(-50%,40px);background:var(--ink);color:#fff;padding:10px 18px;border-radius:99px;font-size:13px;opacity:0;transition:all .3s;z-index:99}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+.rv{animation:rise .7s both}
+@keyframes rise{from{opacity:.001;transform:translateY(16px)}}
+@media(max-width:960px){
+ .links{display:none}.nav-in{gap:8px}.pill b{display:none}
+ .hero{padding-top:130px;min-height:0}
+ .hero-grid{grid-template-columns:1fr}.via{margin-top:30px}
+ .phone-wrap{height:auto;margin-top:34px;padding-bottom:170px}.phone{margin:0 auto}
+ .intro{grid-template-columns:1fr;margin-top:-150px;padding:26px}.intro>div:last-child:empty{display:none}
+ .dest{gap:24px}
+ .grid2,.grid3,.faq-grid{grid-template-columns:1fr}
+ .sec{padding:26px}.sec-h{flex-direction:column;gap:6px}
+ .cta{padding:44px 24px}.cta-row{grid-template-columns:1fr}
+ footer{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}footer>div:first-child{grid-column:1/-1}
+ .float.f1{left:2px}.float.f2{right:0}
+}
+@media(max-width:480px){.cta-row .btn{width:100%;justify-content:center}.pill{display:none}.float{display:none}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute"><defs>
+<symbol id="mk" viewBox="0 0 32 32"><rect width="32" height="32" rx="10" fill="#2f4bff"/><path d="M10.5 21.5 21.5 10.5M12.5 10.5h9v9" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="cp" viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M5 15V6.5A1.5 1.5 0 0 1 6.5 5H15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+<symbol id="xx" viewBox="0 0 24 24"><path fill="currentColor" d="M17.8 3h3.1l-6.8 7.7L22 21h-6.2l-4.9-6.4L5.3 21H2.2l7.3-8.3L1.9 3h6.4l4.4 5.8L17.8 3Zm-1.1 16.2h1.7L7.3 4.7H5.5l11.2 14.5Z"/></symbol>
+</defs></svg>
+
+<header class="nav"><div class="nav-in">
+ <a class="logo" href="#top"><svg><use href="#mk"/></svg>Remit</a>
+ <nav class="links"><a href="#how">How it works</a><a href="#explore">Explore</a><a href="#fees">Fees</a><a href="#payments">Payments</a></nav>
+ <div class="cluster">
+  <div class="pill"><b>$REMIT CA</b><span data-ca-short>dropping soon</span><button class="ibtn" data-copy aria-label="Copy CA"><svg><use href="#cp"/></svg></button></div>
+  <a class="xbtn" data-x href="#" target="_blank" rel="noopener" aria-label="X"><svg><use href="#xx"/></svg></a>
+  <a class="btn" data-buy href="#" target="_blank" rel="noopener">Buy $REMIT</a>
+ </div>
+</div></header>
+
+<main id="top">
+<section class="hero">
+ <div class="bg"><div class="sky"></div><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div>
+ <div class="streak s1"></div><div class="streak s2"></div><div class="streak s3"></div></div>
+ <div class="wrap hero-grid">
+  <div>
+   <span class="eyebrow">Creator fees</span>
+   <h1>Any coin.<br>Paid to anyone.</h1>
+   <a class="btn" href="#solution">Create coin</a>
+   <div class="via"><div class="chips"><span class="chip" style="background:#1b3b8f">P</span><span class="chip" style="background:#2f7bff">V</span><span class="chip" style="background:#3bbd8a">W</span></div><span>Paid out via<br>PayPal, Venmo &amp; banks</span></div>
+  </div>
+  <div class="phone-wrap">
+   <div class="float f1"><div class="dot">+</div><div><b>+$80.00 to @maria_k</b><span style="color:var(--mut)">Creator fees · PayPal</span></div></div>
+   <div class="float f2"><div class="dot" style="background:#16795a">✓</div><div><b>Paid</b><span style="color:var(--mut)">Provider confirmed</span></div></div>
+   <div class="phone" id="phone"><div class="screen"><div class="island"></div>
+    <div class="ph-head"><div class="ava">M</div><div><small>Recipient</small><b>@maria_k</b></div><div class="bell"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 17V11a6 6 0 0 1 12 0v6l1.5 2h-15zM10 21h4"/></svg></div></div>
+    <div class="ph-amt"><span class="lbl">Recipient allocation</span><strong id="amt">$80.00</strong></div>
+    <div class="route" id="route"><span class="lbl">Payout route</span><h4 id="rname">PAYPAL</h4><small id="rsub">USD · PayPal Payouts</small><div class="ring"></div></div>
+    <div class="acts">
+     <div class="act"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/></svg></i>Register</div>
+     <div class="act"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19V5M5 12l7-7 7 7"/></svg></i>Launch</div>
+     <div class="act"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg></i>Harvest</div>
+     <div class="act"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M3 10h18"/></svg></i>Paid</div>
+    </div>
+    <div class="pool"><div><span class="lbl">Recipient pool</span><br><strong>$80.00</strong><span class="tag">80%</span></div><div class="bars hi"><span style="height:30%"></span><span style="height:45%"></span><span style="height:60%"></span><span style="height:40%"></span><span style="height:75%"></span><span style="height:100%"></span><span style="height:70%"></span></div></div>
+    <div class="pool"><div><span class="lbl">Protocol</span><br><strong>$20.00</strong><span class="tag p">20%</span></div><div class="bars"><span style="height:25%"></span><span style="height:35%"></span><span style="height:30%"></span><span style="height:50%"></span><span style="height:40%"></span><span style="height:45%"></span><span style="height:30%"></span></div></div>
+    <div class="demo-tag">DEMONSTRATION</div>
+   </div></div>
+  </div>
+ </div>
+</section>
+
+<section class="intro rv" id="explore">
+ <div class="l">
+  <span class="lbl">Remit fee routes</span>
+  <p>Launch on pump.fun<br>route the creator fees<br>to someone's account</p>
+  <div class="carow"><span class="lbl">Coin CA</span><code data-ca-short>dropping soon</code><button data-copy>Copy</button><a data-chart href="#" target="_blank" rel="noopener">Chart ↗</a></div>
+ </div>
+ <div class="dest"><svg class="mark-lg"><use href="#mk"/></svg><p>Give your coin a<br>destination.</p></div>
+ <div></div>
+</section>
+
+<section class="sec rv" id="problem">
+ <div class="sec-h"><h2>Creator fees stop at a wallet. Most people you'd pay don't have one.</h2><span class="lbl">Problem 01</span></div>
+ <div class="grid3">
+  <div class="cell"><div class="big">1</div><p class="cap">Wallet address. That's where pump.fun creator fees end up. A hard thing to hand to someone who never asked for one.</p><div class="stack"><div class="wal a"><span>creator wallet</span><b>7xKq…9fPa</b></div><div class="wal b"><span>creator fees</span><b>◎ SOL</b></div><div class="wal c"><span>the recipient</span><b>no wallet</b></div></div></div>
+  <div class="cell"><div class="big">0<small>wallets</small></div><p class="cap">The recipient needs none. Their share lands in PayPal, Venmo, Wise or a bank account.</p></div>
+  <div class="cell"><div class="big">$5</div><p class="cap">First payout milestone. Each new milestone sends the full unpaid balance, rounded down to cents.</p><a class="btn" style="margin-top:22px" href="#solution">Create coin</a></div>
+ </div>
+</section>
+
+<section class="sec rv" id="solution">
+ <div class="sec-h"><h2>One coin, one destination</h2><span class="lbl">The solution 02</span></div>
+ <p class="s" style="margin-bottom:24px">Name a recipient, launch on pump.fun, and the rules book 80% of every harvest for them. Settlement pays it out in fiat.</p>
+ <div class="grid3">
+  <div class="cell"><div class="you"><div class="lbl">You chose</div><p>Send the creator fees to my sister's PayPal.</p></div>
+   <div class="alias"><div><span class="lbl">Recipient alias</span><br><b id="al">@maria_k</b></div><span class="ok" id="alok">PayPal · USD</span></div>
+   <div class="field"><input id="rin" placeholder="Paste their PayPal email…" autocomplete="off"><button class="btn" id="rgo">Name someone</button></div>
+   <p class="cap" style="margin-top:14px">Register a PayPal, Venmo, Wise or bank route once.</p></div>
+  <div class="cell"><div class="harv"><div class="lbl" style="margin-bottom:10px">Harvests · DEMONSTRATION</div>
+   <div class="row"><span>Collected this month</span><b>$1,240.00</b></div>
+   <div class="row"><span>Harvest · 80% booked</span><b class="pos">+$120.00</b></div>
+   <div class="row"><span>Protocol share</span><b>$30.00</b></div></div>
+   <h3 style="margin-top:22px">Follow every dollar</h3><p class="cap">Harvests, allocations and payouts in one record.</p></div>
+  <div class="cell"><div class="stack" style="height:150px"><div class="wal a" style="background:linear-gradient(135deg,#4fd4a4,#1b8d70);top:10px;height:110px"><span>Settlement</span><br><b style="font-size:20px">Paid in fiat</b></div></div><h3>Paid in fiat</h3><p class="cap">Settled through PayPal Payouts, Wise or Stripe.</p></div>
+ </div>
+</section>
+
+<section class="sec rv" id="how">
+ <div class="sec-h"><h2>A clear path in three steps</h2><span class="lbl">How it works 03</span></div>
+ <p class="s" style="margin-bottom:24px">Register a recipient, launch the coin, and let trading fees flow to them under rules written down up front.</p>
+ <div class="grid3 steps">
+  <div class="step"><span class="n">/01</span><div><h3>Register the recipient</h3><p class="s">Pick a payment route and register their account. Private details stay off chain; an opaque reference links it to a public alias.</p></div></div>
+  <div class="step"><span class="n">/02</span><div><h3>Launch the coin</h3><p class="s">Create it on pump.fun with the fee route pointed at Remit, which becomes the coin's creator fee destination.</p></div></div>
+  <div class="step"><span class="n">/03</span><div><h3>Collect and pay</h3><p class="s">A harvest books 80% for the recipient and 20% for the protocol. Settlement pays them at each payout milestone.</p></div></div>
+ </div>
+</section>
+
+<section class="sec rv" id="features">
+ <div class="sec-h"><h2>Every fee is split the moment it's collected.</h2><span class="lbl">Features 04</span></div>
+ <div class="grid3">
+  <div class="cell calc"><span class="lbl">Fee split · DEMONSTRATION</span>
+   <div class="big" style="font-size:46px;margin:12px 0 0" id="cv">$1,000</div>
+   <input type="range" id="cr" min="10" max="5000" step="10" value="1000" aria-label="Creator fees collected in USD">
+   <div class="split"><div class="r">Recipient<small id="cr80">$800</small></div><div class="p">Protocol<small id="cr20">$200</small></div></div>
+   <p class="cap">Recipient: 80% per harvest. Drag to change the fees collected.</p></div>
+  <div class="cell"><span class="lbl">Route · fixed after first use</span>
+   <div class="tabs" style="margin-top:12px" id="tabs"><button class="tab on" data-r="">PayPal</button><button class="tab" data-r="v">Venmo</button><button class="tab" data-r="w">Wise</button><button class="tab" data-r="b">Bank</button></div>
+   <div class="rcard" id="rcard"><span class="lbl">Payout route</span><span class="lock">LOCKED</span><h4 id="rcn">PayPal</h4><small id="rcs">USD · to @maria_k</small></div>
+   <h3 style="margin-top:20px">The route is fixed the first time it's used.</h3></div>
+  <div class="cell"><span class="lbl">Rule · v0</span><div class="code" style="margin:12px 0 16px"><em>RECIPIENT_BPS</em> = <i>8_000</i><br><em>BPS</em> = <i>10_000</i><br>recipient = amount × <em>RECIPIENT_BPS</em> / <em>BPS</em></div>
+   <h3>Defined up front</h3><p class="cap">8,000 of 10,000 basis points assigns 80% of collected creator fees to the recipient pool. The remainder belongs to the protocol. A do-not-pay alias sends its future share to treasury.</p></div>
+ </div>
+</section>
+
+<section class="sec rv" id="payments">
+ <div class="sec-h"><h2>From allocation to arrival, every step in view.</h2><span class="lbl">Settlement 05</span></div>
+ <div class="grid2">
+  <div class="cell"><span class="lbl">Payouts · DEMONSTRATION</span>
+   <div class="big" style="margin:12px 0 4px" id="lc">$7.00</div><span class="cap" style="margin:0">Lifetime credits · @maria_k</span>
+   <div class="ladder" id="ladder"></div><div style="height:16px"></div>
+   <input type="range" id="lr" min="1" max="1500" value="7" style="width:100%;accent-color:#2f4bff;margin-top:8px" aria-label="Lifetime credits in USD">
+   <div class="kv" style="margin-top:14px"><span>Last milestone</span><b id="lm">$5</b><span>Next milestone</span><b id="ln">$10</b><span>To next</span><b id="lt">$3.00</b></div></div>
+  <div class="cell"><span class="lbl">Activity · DEMONSTRATION</span>
+   <ul class="ledger"><li><i>P</i><div>Payout · PayPal<br><span class="lbl">Provider confirmed</span></div><b>$7.00</b></li><li><i>↓</i><div>Harvest · 80% booked<br><span class="lbl">Recipient pool</span></div><b class="pos">+$2.16</b></li><li><i>↓</i><div>Harvest · 80% booked<br><span class="lbl">Recipient pool</span></div><b class="pos">+$4.84</b></li></ul>
+   <div style="margin-top:18px"><span class="lbl">Payment states</span><ul class="ledger"><li><i>1</i><div>Allocated<br><span class="lbl">Booked, waiting for the next milestone</span></div></li><li><i>2</i><div>Pending<br><span class="lbl">Funds reserved, outcome not confirmed</span></div></li><li><i>3</i><div>Paid<br><span class="lbl">Provider confirmed the outbound payment</span></div><b class="pos">done</b></li></ul></div></div>
+ </div>
+</section>
+
+<section class="sec rv">
+ <div class="sec-h"><h2>Every milestone, easy to follow</h2><span class="lbl">Milestones 06</span></div>
+ <p class="s" style="margin-bottom:24px">Lifetime credits climb with trading. Each time a new milestone is crossed, the full unpaid balance becomes eligible for payout.</p>
+ <div class="grid3">
+  <div class="cell"><span class="lbl">/01 Recipient share</span><div class="big" style="margin:30px 0 8px">80%</div><p class="cap">Of every collected creator fee, written as RECIPIENT_BPS = 8_000.</p></div>
+  <div class="cell"><span class="lbl">/02 Milestones</span><div class="big" style="margin:30px 0 8px">$5<small>→ $1,000</small></div><p class="cap">$5, $10, $20, $50, $100, $250, $500, $1,000 and every $1,000.</p></div>
+  <div class="cell"><span class="lbl">/03 First payout</span><div class="big" style="margin:30px 0 8px">$5</div><p class="cap">Rounded down to cents, before provider fees.</p></div>
+ </div>
+</section>
+
+<section class="sec rv">
+ <div class="sec-h"><h2>In numbers</h2><span class="lbl">In numbers 07</span></div>
+ <div class="grid2">
+  <div class="cell"><div class="big">$7</div><p class="q" style="margin-top:18px">An approved recipient with $7 in lifetime credits and no previous payout is paid the full $7 once the $5 milestone is crossed.</p><p class="cap">If lifetime credits later reach $12 after that payment completes, the next allocation is the unpaid $5, at the $10 milestone.</p></div>
+  <div class="cell"><span class="lbl">Example</span><div class="split" style="height:90px;margin-top:20px;font-size:16px"><div class="r">Recipient pool<small>8 SOL</small></div><div class="p">Protocol<small>2 SOL</small></div></div><p class="q" style="margin-top:20px">10 SOL in collected creator fees books 8 SOL to the recipient pool and 2 SOL to the protocol treasury.</p><p class="cap">Sample numbers. DEMONSTRATION.</p></div>
+ </div>
+</section>
+
+<section class="sec rv">
+ <div class="sec-h"><h2>Clear on the record, simple at the other end.</h2><span class="lbl">Key benefits 08</span></div>
+ <div class="grid3">
+  <div class="cell w"><span class="lbl">[01]</span><div class="rcard" style="height:130px;margin:14px 0 18px;background:linear-gradient(145deg,#6a8cff,#2f4bff)"><span class="lbl">Remit</span><h4 style="bottom:38px;font-size:18px">You've received $80.00</h4><small style="bottom:16px">Creator fees · @maria_k</small></div><h3>No wallet on the other end</h3><p class="cap">The creator signs with a wallet. The recipient only needs a PayPal, Venmo, Wise or bank account.</p></div>
+  <div class="cell w"><span class="lbl">[02]</span><div class="code" style="margin:14px 0 18px;height:130px;font-size:11.5px">alias <em>@maria_k</em><br>method <i>1 · PayPal</i><br>reference <em>0x835c…2a50</em><br><span style="color:#ff9a8a">SettlementMismatch()</span></div><h3>A route that can't be swapped</h3><p class="cap">Reusing an alias with another method or reference is rejected. Existing coins keep their destination.</p></div>
+  <div class="cell w"><span class="lbl">[03]</span><div class="ledger" style="margin:8px 0 12px"><li style="padding:6px 0"><i>↓</i>Fees attributed<b>per coin</b></li><li style="padding:6px 0"><i>◎</i>Harvested<b>80 / 20</b></li><li style="padding:6px 0"><i>✓</i>Provider confirmed<b class="pos">paid</b></li></div><h3>Every share on the record</h3><p class="cap">Each allocation is logged. A confirmed provider payment records each payout.</p></div>
+ </div>
+</section>
+
+<section class="sec rv" id="fees">
+ <div class="sec-h"><h2>Simple fees, written down.</h2><span class="lbl">Fees 09</span></div>
+ <p class="s" style="margin-bottom:24px">Remit takes no trading fee of its own. It splits the creator fees a coin collects, 80% to the recipient and 20% to the protocol.</p>
+ <div class="grid2">
+  <div class="cell"><span class="lbl">Remit standard</span><div class="big" style="margin:18px 0 6px">8<small>SOL per 10 SOL</small></div><p class="cap">Recipient gets 8 SOL of every 10 SOL of creator fees collected. Protocol gets 2.</p><ul class="ledger" style="margin-top:14px"><li>80% of fees to the recipient</li><li>20% to the protocol</li><li>No wallet needed · Fixed route · Paid from $5</li></ul><a class="btn" style="margin-top:14px" href="#solution">Create coin</a></div>
+  <div class="cell"><span class="lbl">Remit scale</span><div class="big" style="margin:18px 0 6px">80<small>SOL per 100 SOL</small></div><p class="cap">Same split at any size. The route and the rule never change after launch.</p><ul class="ledger" style="margin-top:14px"><li>80% of fees to the recipient</li><li>20% to the protocol</li><li>Paid via PayPal · Venmo · Bank</li></ul><a class="btn ghost" style="margin-top:14px" href="#solution">Create coin</a></div>
+ </div>
+</section>
+
+<section class="sec rv" id="faq">
+ <div class="faq-grid"><div><span class="lbl">FAQs 10</span><h2 style="margin-top:12px">Questions, answered clearly.</h2><p class="s" style="margin-top:14px">Fees, recipients, routes and payouts, explained before you launch.</p></div>
+ <div>
+  <details open><summary><i>01.</i>Does 80% mean 80% of a trade?</summary><p>No. The split applies to creator fees actually collected. Trade volume, price and supply are separate. Fees depend on trading activity; launching a coin does not guarantee revenue.</p></details>
+  <details><summary><i>02.</i>Can I change the recipient after launch?</summary><p>The route is fixed the first time an alias is used. A different destination needs a new reference and a new alias for a new launch. It does not reroute fees from existing coins.</p></details>
+  <details><summary><i>03.</i>Does a recipient need a crypto wallet?</summary><p>No. The payout goes to their approved provider account. Only the creator connects a wallet. A creator's signature does not prove ownership of someone else's payment account, so recipients are reviewed before live payouts.</p></details>
+  <details><summary><i>04.</i>Why might an allocated balance stay unpaid?</summary><p>The next milestone may not be reached yet, the recipient may be awaiting review, or the provider may lack funding. A payment in progress also reserves its allocation until the outcome is confirmed.</p></details>
+  <details><summary><i>05.</i>Is every payment method available now?</summary><p>This site is a demonstration of the product, not a live payout service yet. Listed routes: PayPal, Venmo, Wise, ACH, wire, SEPA, local bank transfer and debit card. Availability depends on country and provider rules.</p></details>
+  <details><summary><i>06.</i>What happens if a payment result is unknown?</summary><p>The request is kept and the funds stay reserved until it is reconciled. An uncertain response is never treated as proof that no money moved.</p></details>
+ </div></div>
+</section>
+
+<section class="sec rv">
+ <div class="sec-h"><h2>Read how fees move.</h2><a class="lbl" href="#faq">View all →</a></div>
+ <div class="grid3">
+  <a class="doc" href="#how"><span class="lbl">Guide</span><h3>Launch a coin for someone</h3></a>
+  <a class="doc" href="#features"><span class="lbl">Guide</span><h3>The 80/20 split</h3></a>
+  <a class="doc" href="#payments"><span class="lbl">Guide</span><h3>From allocation to arrival</h3></a>
+ </div>
+</section>
+
+<section class="cta rv">
+ <span class="lbl">Get started · now</span>
+ <h2>Give your coin<br>a destination.</h2>
+ <div class="cta-row">
+  <div><ul><li>One alias</li><li>One fixed route</li><li>Every harvest</li></ul>
+   <div class="carow" style="margin-top:22px"><span class="lbl" style="color:#9aa4c8">$REMIT</span><code data-ca-short>dropping soon</code><button data-copy>Copy</button><a data-chart href="#" target="_blank" rel="noopener">Chart ↗</a><a data-x href="#" target="_blank" rel="noopener">X ↗</a></div></div>
+  <a class="btn" data-buy href="#" target="_blank" rel="noopener">Buy $REMIT</a>
+ </div>
+</section>
+</main>
+
+<footer>
+ <div><a class="logo" href="#top" style="font-size:22px"><svg><use href="#mk"/></svg>Remit</a><p style="color:var(--mut);margin-top:12px;max-width:260px">Creator fees, routed to the people you choose.</p>
+  <div class="field"><input id="chk" placeholder="Check a recipient alias" autocomplete="off"><button class="btn" id="chkgo">Check</button></div><p class="lbl" id="chkout" style="margin-top:10px"></p></div>
+ <div><h5>Product</h5><a href="#top">Home</a><a href="#explore">Explore</a><a href="#solution">Create coin</a><a href="#payments">Payments</a></div>
+ <div><h5>Protocol</h5><a href="#how">How it works</a><a href="#fees">Fees</a><a href="#features">Capital flow</a><a href="#faq">Docs</a></div>
+ <div><h5>Coin</h5><a data-buy href="#" target="_blank" rel="noopener">Buy $REMIT</a><a data-chart href="#" target="_blank" rel="noopener">Chart</a><a data-x href="#" target="_blank" rel="noopener">X</a></div>
+ <div><h5>Settlement</h5><p style="color:var(--mut)">Payouts start at $5<br>Availability varies by region<br>Solana · pump.fun</p></div>
+ <div class="copy"><span>© 2026 Remit. All rights reserved.</span><span>All amounts and recipients on this page are sample data. DEMONSTRATION. Not financial advice.</span></div>
+</footer>
+<div class="toast" id="toast">Copied</div>
+
+<script src="config.js"></script>
+<script>
+(function(){
+var C=window.REMIT_CFG||{},$=function(s,r){return[].slice.call((r||document).querySelectorAll(s))};
+var ca=C.CA||"",short=ca?ca.slice(0,4)+"…"+ca.slice(-4):"dropping soon";
+var buy=C.BUY||(ca?"https://pump.fun/coin/"+ca:""),chart=C.CHART||(ca?"https://gmgn.ai/sol/token/"+ca:""),x=C.X||"";
+$("[data-ca-short]").forEach(function(e){e.textContent=short});
+function wire(sel,u){$(sel).forEach(function(a){if(u){a.href=u}else{a.addEventListener("click",function(e){e.preventDefault();toast("Drops at launch")})}})}
+wire("[data-buy]",buy);wire("[data-chart]",chart);wire("[data-x]",x);
+var tt;function toast(m){var t=document.getElementById("toast");t.textContent=m;t.classList.add("on");clearTimeout(tt);tt=setTimeout(function(){t.classList.remove("on")},1600)}
+$("[data-copy]").forEach(function(b){b.addEventListener("click",function(){if(!ca){toast("CA drops at launch");return}
+ try{navigator.clipboard.writeText(ca).then(function(){toast("CA copied")},function(){toast(ca)})}catch(e){toast(ca)}})});
+/* reveal */
+var io=("IntersectionObserver"in window)?new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target)}})},{threshold:.08}):null;
+$(".rv").forEach(function(e){io?io.observe(e):e.classList.add("in")});
+setTimeout(function(){$(".rv").forEach(function(e){var r=e.getBoundingClientRect();if(r.top<innerHeight)e.classList.add("in")})},300);
+/* count up */
+(function(){var el=document.getElementById('amt'),t0=null;if(!el||matchMedia('(prefers-reduced-motion:reduce)').matches)return;function f(t){if(!t0)t0=t;var p=Math.min((t-t0)/1400,1),e=1-Math.pow(1-p,3);el.textContent='$'+(80*e).toFixed(2);if(p<1)requestAnimationFrame(f)}requestAnimationFrame(f)})();
+/* phone tilt + route cycle */
+var ph=document.getElementById("phone");
+if(ph&&matchMedia("(hover:hover)").matches){document.addEventListener("mousemove",function(e){var px=(e.clientX/innerWidth-.5),py=(e.clientY/innerHeight-.5);ph.style.transform="rotateY("+(px*-10)+"deg) rotateX("+(py*8)+"deg)"})}
+var R=[["","PAYPAL","USD · PayPal Payouts"],["v","VENMO","USD · by phone"],["w","WISE","EUR · SEPA"]],ri=0,rt=document.getElementById("route");
+setInterval(function(){ri=(ri+1)%3;rt.className="route "+R[ri][0];document.getElementById("rname").textContent=R[ri][1];document.getElementById("rsub").textContent=R[ri][2]},3200);
+/* name someone */
+var rin=document.getElementById("rin");
+function nameIt(){var v=(rin.value||"").trim();if(!v){toast("Paste an email first");return}
+ var a="@"+v.split("@")[0].replace(/[^a-z0-9_.]/gi,"").toLowerCase().slice(0,16);if(a==="@")a="@recipient";
+ document.getElementById("al").textContent=a;document.getElementById("alok").textContent="sample · not registered";
+ document.getElementById("rcs").textContent="USD · to "+a}
+var rcn=document.getElementById("rcn");
+document.getElementById("rgo").addEventListener("click",nameIt);rin.addEventListener("keydown",function(e){if(e.key==="Enter")nameIt()});
+/* calc */
+var cr=document.getElementById("cr"),fm=function(n){return"$"+n.toLocaleString("en-US",{maximumFractionDigits:2})};
+function calc(){var v=+cr.value;document.getElementById("cv").textContent=fm(v);document.getElementById("cr80").textContent=fm(v*.8);document.getElementById("cr20").textContent=fm(v*.2)}
+cr.addEventListener("input",calc);calc();
+/* tabs */
+var T={"":["PayPal","USD · to @maria_k",""],v:["Venmo","USD · by phone","v"],w:["Wise","EUR · SEPA","w"],b:["Bank","ACH · wire · SEPA","b"]};
+$("#tabs .tab").forEach(function(t){t.addEventListener("click",function(){$("#tabs .tab").forEach(function(o){o.classList.remove("on")});t.classList.add("on");var k=t.getAttribute("data-r"),d=T[k];
+ document.getElementById("rcard").className="rcard "+d[2];document.getElementById("rcn").textContent=d[0];document.getElementById("rcs").textContent=d[1]})});
+/* ladder */
+var M=[5,10,20,50,100,250,500,1000],lad=document.getElementById("ladder"),lr=document.getElementById("lr");
+M.forEach(function(m,i){var d=document.createElement("div");d.style.height=(22+i*11)+"%";d.innerHTML="<span>$"+m+"</span>";lad.appendChild(d)});
+function ladder(){var v=+lr.value,last=0,next=5;
+ for(var i=0;i<M.length;i++){if(v>=M[i])last=M[i]}
+ next=v>=1000?(Math.floor(v/1000)+1)*1000:(M.filter(function(m){return m>v})[0]);
+ $("div",lad).forEach(function(d,i){d.className=v>=M[i]?"on":(M[i]===next?"nx":"")});
+ document.getElementById("lc").textContent="$"+v.toFixed(2);document.getElementById("lm").textContent=last?"$"+last:"none yet";
+ document.getElementById("ln").textContent="$"+next;document.getElementById("lt").textContent="$"+(next-v).toFixed(2)}
+lr.addEventListener("input",ladder);ladder();
+/* alias check */
+document.getElementById("chkgo").addEventListener("click",function(){var v=document.getElementById("chk").value.trim().replace(/^@/,"");
+ document.getElementById("chkout").textContent=v?("@"+v+" · sample check, no registry yet"):"Type an alias first"});
+})();
+</script>
+</body>
+</html>
